@@ -1,24 +1,22 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import helmet from "helmet";
 
 import { users } from "./fakeData/fakeUsers.js";
 import { router as apiRoutes } from "./routes/index.js";
 import { connectDB } from "./config/mongodb.js";
 import { connectSupabase } from "./config/supabase.js";
-import { limiter } from "./middlewares/rateLimiter.js";
+import { limiter } from "./middlewares/rateLimiter.js"; // import limiter from "./middlewares/rateLimiter.js";
+import helmet from "helmet";
 
 const app = express();
-
 app.use(helmet());
-
+const PORT = process.env.PORT || 3002;
 const corsOptions = {
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
-    "https://jsd-fullstack-react.vercel.app",
   ], // frontend domain
   credentials: true, // ✅ allow cookies to be sent
 };
@@ -63,8 +61,6 @@ app.get("/", (req, res) => {
   </html>`);
 });
 
-// Centralized error for 404 Not Found
-
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -77,8 +73,6 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-
-const PORT = 3002;
 
 await connectDB();
 await connectSupabase();
