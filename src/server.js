@@ -74,8 +74,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = 3002;
-
 await connectDB();
 await connectSupabase();
 
